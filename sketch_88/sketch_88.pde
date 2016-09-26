@@ -3,6 +3,7 @@
 */
 import damkjer.ocd.*;
 Camera camera;
+float velocity;
 
 void setup()
 {
@@ -16,15 +17,25 @@ void draw()
   worldGen(100, 100);
   lights();
   camera.feed();
+  camera.dolly(velocity);
+  fill(#ffffff);
+  textSize(5);
+  text(velocity, 10, 0);
   if(keyPressed == true)
   {
     if (key == 's')
     {
-      camera.dolly(0.5);
-    } 
+      if (velocity < 0)
+      {
+      velocity += 0.05;
+      }
+    }
     else if (key == 'w')
     {
-      camera.dolly(-0.5);
+      if (velocity > -0.06)
+      {
+      velocity -= 0.1;
+      }
     }
     else if (key == 'd')
     {
