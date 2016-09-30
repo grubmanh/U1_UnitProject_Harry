@@ -21,23 +21,29 @@ public class sketch_88 extends PApplet {
 */
 
 Camera camera;
-float velocity;
+float velocity, wallHeight;
+PImage sky;
+PImage wall;
+
 
 public void setup()
 {
   
-  camera = new Camera(this, 10, -2, 10);
+  camera = new Camera(this, 10, -2, 10, 1, 1000);
   camera.aim(0, -2, 0);
+  wall = loadImage("wall.jpg");
+  // sky.resize(10,10);
 }
 public void draw()
 {
   background(0);
-  worldGen(100, 100);
+  worldGen(500, 500);
+  wallHeight = 100;
   lights();
   camera.feed();
   camera.dolly(velocity);
   fill(0xffffffff);
-  textSize(10);
+  textSize(5);
   text(velocity, 10, 0);
   if(keyPressed == true)
   {
@@ -52,7 +58,7 @@ public void draw()
     {
       if (velocity > -0.06f)
       {
-      velocity -= 0.1f;
+      velocity -= 0.5f;
       }
     }
     else if (key == 'd')
@@ -65,18 +71,74 @@ public void draw()
     }
   }
 }
-public void worldGen(int worldWid, int worldDep) //  Generates a world of specified dimensions
+public void worldGen(int worldWid, int worldDep)
 {
-  for (int xPosition = 0; xPosition < worldWid; xPosition++)
-  {
-    for (int zPosition = 0; zPosition < worldDep; zPosition++)
-    {
-      pushMatrix();
-      translate(xPosition, 0, zPosition);
-      box(1, 1, 1);
-      popMatrix();
-    }
-  }
+  beginShape(QUADS);
+      fill(0xffffffff);
+      vertex(0,0,0);              // Far Side of Cube
+      vertex(0,1,0);
+      vertex(worldWid,1, 0);
+      vertex(worldWid,0,0);
+
+      vertex(worldWid,0,0);         // Right Side of Cube
+      vertex(worldWid,1,0);
+      vertex(worldWid,1,worldDep);
+      vertex(worldWid,0,worldDep);
+
+      vertex(0,1,0);         // Top Side of Cube
+      vertex(0,1,worldDep);
+      vertex(worldWid,1,worldDep);
+      vertex(worldWid,1,0);
+
+      vertex(0,1,worldDep);    // Front Side of Cube
+      vertex(0,0,worldDep);
+      vertex(worldWid,0,worldDep);
+      vertex(worldWid,1,worldDep);
+
+      vertex(0,0,0);              // Left Side of Cube
+      vertex(0,0,worldDep);
+      vertex(0,1,worldDep);
+      vertex(0,1,0);
+
+      vertex(0,0,0);              // Bottom Side of Cube
+      vertex(0,0,worldDep);
+      vertex(worldWid,0,worldDep);
+      vertex(worldWid,0,0);
+
+      vertex(0,1,0);              // Far Side of Wall
+      vertex(0,-(wallHeight + 1),0);
+      vertex(worldWid,-(wallHeight + 1),0);
+      vertex(worldWid,1,0);
+
+      vertex(worldWid,1,0);       // Right Side of Wall
+      vertex(worldWid,-(wallHeight + 1),0);
+      vertex(worldWid,-(wallHeight + 1),worldDep);
+      vertex(worldWid,1,worldDep);
+
+
+
+      vertex(0,1,worldDep);       // Near Side of Wall
+      vertex(0,-(wallHeight + 1),worldDep);
+      vertex(worldWid,-(wallHeight + 1), worldDep);
+      vertex(worldWid,1,worldDep);
+
+      fill(0xff99ccff);
+      vertex(0,-(wallHeight + 1),0,                0,0);  // Sky of World
+      vertex(worldWid,-(wallHeight + 1),0,         0,10);
+      vertex(worldWid,-(wallHeight + 1),worldDep,  10,10);
+      vertex(0,-(wallHeight + 1),worldDep,         10,0);
+
+  endShape();
+
+  beginShape(QUADS);
+    textureMode(NORMAL);
+    texture(wall);
+    vertex(0,1,0,       0,0);              // Left Side of Wall
+    vertex(0,-(wallHeight + 1),0, 0,1000);
+    vertex(0,-(wallHeight + 1),worldDep,400,1000);
+    vertex(0,1,worldDep,400,0);
+  endShape();
+
 }
   public void settings() {  fullScreen(P3D); }
   static public void main(String[] passedArgs) {
