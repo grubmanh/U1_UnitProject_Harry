@@ -21,15 +21,18 @@ public class sketch_88 extends PApplet {
 */
 
 Camera camera;
+Cloud cloud1;
 float velocity, wallHeight;
 PImage sky;
 PImage wall;
+int worldSize = 500;
 
 
 public void setup()
 {
   
   camera = new Camera(this, 10, -2, 10, 1, 1000);
+  cloud1 = new Cloud();
   camera.aim(0, -2, 0);
   wall = loadImage("wall.jpg");
   // sky.resize(10,10);
@@ -37,13 +40,14 @@ public void setup()
 public void draw()
 {
   background(0);
-  worldGen(500, 500);
+  worldGen(worldSize, worldSize);
   wallHeight = 100;
   lights();
   camera.feed();
   camera.dolly(velocity);
   fill(0xffffffff);
   textSize(5);
+  cloud1.start(1);
   text(velocity, 10, 0);
   if(keyPressed == true)
   {
@@ -74,7 +78,7 @@ public void draw()
 public void worldGen(int worldWid, int worldDep)
 {
   beginShape(QUADS);
-      fill(0xffffffff);
+      fill(255);
       vertex(0,0,0);              // Far Side of Cube
       vertex(0,1,0);
       vertex(worldWid,1, 0);
@@ -115,7 +119,10 @@ public void worldGen(int worldWid, int worldDep)
       vertex(worldWid,-(wallHeight + 1),worldDep);
       vertex(worldWid,1,worldDep);
 
-
+      vertex(0,1,0);              // Left Side of Wall
+      vertex(0,-(wallHeight + 1),0);
+      vertex(0,-(wallHeight + 1),worldDep);
+      vertex(0,1,worldDep);
 
       vertex(0,1,worldDep);       // Near Side of Wall
       vertex(0,-(wallHeight + 1),worldDep);
@@ -129,16 +136,60 @@ public void worldGen(int worldWid, int worldDep)
       vertex(0,-(wallHeight + 1),worldDep,         10,0);
 
   endShape();
+}
 
-  beginShape(QUADS);
-    textureMode(NORMAL);
-    texture(wall);
-    vertex(0,1,0,       0,0);              // Left Side of Wall
-    vertex(0,-(wallHeight + 1),0, 0,1000);
-    vertex(0,-(wallHeight + 1),worldDep,400,1000);
-    vertex(0,1,worldDep,400,0);
-  endShape();
+class Cloud
+{
+  float x_pos = 250.0f;
+  float y_pos = -2.0f;
+  float z_pos = 250.0f;
+  int cloudLength = 100;
+  int cloudWidth = 50;
+  int cloudHeight = -10;
 
+  public void start(int cloudNumber)
+  {
+    pushMatrix();
+    translate(x_pos, y_pos, z_pos);
+    cloudShape();
+    popMatrix();
+  }
+
+  public void cloudShape()
+  {
+    beginShape(QUADS);
+      fill(255);
+      vertex(0,0,0);   // Bottom of Cloud
+      vertex(0,0,cloudLength);
+      vertex(cloudWidth,0,cloudLength);
+      vertex(cloudWidth,0,0);
+
+      vertex(0,cloudHeight,0);   // Top of Cloud
+      vertex(0,cloudHeight,cloudLength);
+      vertex(cloudWidth,cloudHeight,cloudLength);
+      vertex(cloudWidth,cloudHeight,0);
+
+      vertex(0,0,0);   // Left of Cloud
+      vertex(0,0,cloudLength);
+      vertex(0,cloudHeight,cloudLength);
+      vertex(0,cloudHeight,0);
+
+      vertex(cloudWidth,0,0);    // Right of Cloud
+      vertex(cloudWidth,0,cloudLength);
+      vertex(cloudWidth,cloudHeight,cloudLength);
+      vertex(cloudWidth,cloudHeight,0);
+
+      vertex(0,0,0);    // Front of Cloud
+      vertex(0,cloudHeight,0);
+      vertex(cloudWidth,cloudHeight,0);
+      vertex(cloudWidth,0,0);
+
+      vertex(0,0,cloudLength);   //Back of Cloud
+      vertex(0,cloudHeight,cloudLength);
+      vertex(cloudWidth,cloudHeight,cloudLength);
+      vertex(cloudWidth,0,cloudLength);
+    endShape();
+  }
 }
   public void settings() {  fullScreen(P3D); }
   static public void main(String[] passedArgs) {
