@@ -1,6 +1,7 @@
 <html>
 <body>
   <h1>Unit 1 Final Project<h4> by Harry Grubman</h4></h1>
+  <p>Please note that the "Obsessive Camera Direction (OCD)" package is required to run this program.</p>
   <h2>Description</h2>
   <p>This project is a combination of all the concepts learned in Unit 1. It is randomly generated clouds moving with vectors in a generated world. When these clouds get to the edges of the world, they wrap around so that the clouds never leave the sky barren.</p>
   <h2>Inspiration</h2>
