@@ -33,16 +33,6 @@ void draw()
     cloud.render();
     cloud.cloudMovement();
   }
-  // cloud1.render();    // Rendering and movement of clouds
-  // cloud1.cloudMovement();
-  // cloud2.render();
-  // cloud2.cloudMovement();
-  // cloud3.render();
-  // cloud3.cloudMovement();
-  // cloud4.render();
-  // cloud4.cloudMovement();
-  // cloud5.render();
-  // cloud5.cloudMovement();
   ocdMovement();      // Function for movement of OCD cam
 }
 void worldGen(int worldWid, int worldDep, int wallHeight)
