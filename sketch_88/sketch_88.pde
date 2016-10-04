@@ -4,20 +4,21 @@
  */
 import damkjer.ocd.*;   // Import OCD Cam
 Camera camera;
-Cloud cloud1, cloud2, cloud3, cloud4, cloud5;   //  Creates 5 clouds
+Cloud[] clouds;   //  Creates 5 clouds
 float velocity;
 int worldSize = 500;    // Square world of length and width worldSize
 int wallHeight = 100;   // Walls of height wallHeight
+int cloudNumber = 20;
 
 void setup()
 {
   fullScreen(P3D);
   camera = new Camera(this, 10, -5, 10, 1, (2*worldSize));
-  cloud1 = new Cloud();
-  cloud2 = new Cloud();
-  cloud3 = new Cloud();
-  cloud4 = new Cloud();
-  cloud5 = new Cloud();
+  clouds = new Cloud[cloudNumber];
+  for (int x = 0; x < cloudNumber; x++) // Initialize for cloudNumber
+    {
+      clouds[x] = new Cloud();
+    }
   camera.aim(worldSize, -5, worldSize);
 }
 void draw()
@@ -27,16 +28,21 @@ void draw()
   lights();
   camera.feed();
   camera.dolly(velocity);
-  cloud1.render();    // Rendering and movement of clouds
-  cloud1.cloudMovement();
-  cloud2.render();
-  cloud2.cloudMovement();
-  cloud3.render();
-  cloud3.cloudMovement();
-  cloud4.render();
-  cloud4.cloudMovement();
-  cloud5.render();
-  cloud5.cloudMovement();
+  for (Cloud cloud : clouds)
+  {
+    cloud.render();
+    cloud.cloudMovement();
+  }
+  // cloud1.render();    // Rendering and movement of clouds
+  // cloud1.cloudMovement();
+  // cloud2.render();
+  // cloud2.cloudMovement();
+  // cloud3.render();
+  // cloud3.cloudMovement();
+  // cloud4.render();
+  // cloud4.cloudMovement();
+  // cloud5.render();
+  // cloud5.cloudMovement();
   ocdMovement();      // Function for movement of OCD cam
 }
 void worldGen(int worldWid, int worldDep, int wallHeight)
